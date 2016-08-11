@@ -23,20 +23,20 @@ app.post("/api/garage/door/1", function(req, res) {
 	async.series([
 		function(callback) {
 			// Open pin for output
-			gpio.open(config.GARAGE_DOOR_1_PIN, "output", callback);
+			gpio.open(config.GARAGE_DOORS[0].pin, "output", callback);
 		},
 		function(callback) {
 			// Turn the relay on
-			gpio.write(config.GARAGE_DOOR_1_PIN, config.RELAY_ON, callback);
+			gpio.write(config.GARAGE_DOORS[0].pin, config.RELAY_ON, callback);
 		},
 		function(callback) {
 			// Turn the relay off after delay to simulate button press
-			delayPinWrite(config.GARAGE_DOOR_1_PIN, config.RELAY_OFF, callback);
+			delayPinWrite(config.GARAGE_DOORS[0].pin, config.RELAY_OFF, callback);
 		},
 		function(err, results) {
 			setTimeout(function() {
 				// Close pin from further writing
-				gpio.close(config.GARAGE_DOOR_1_PIN);
+				gpio.close(config.GARAGE_DOORS[0].pin);
 				// Return json
 				res.json("ok");
 			}, config.RELAY_TIMEOUT);
