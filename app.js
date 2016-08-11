@@ -15,33 +15,38 @@ function delayPinWrite(pin, value, callback) {
 	}, config.RELAY_TIMEOUT);
 }
 
-app.get("/api/ping", function(req, res) {
-	res.json("pong");
-});
-
-app.post("/api/garage/door/1", function(req, res) {
-	async.series([
+function simulateButtonPress(pin) {
+	return async.series([
 		function(callback) {
 			// Open pin for output
-			gpio.open(config.GARAGE_DOORS[0].pin, "output", callback);
+			gpio.open(pin, "output", callback);
 		},
 		function(callback) {
 			// Turn the relay on
-			gpio.write(config.GARAGE_DOORS[0].pin, config.RELAY_ON, callback);
+			gpio.write(pin, config.RELAY_ON, callback);
 		},
 		function(callback) {
 			// Turn the relay off after delay to simulate button press
-			delayPinWrite(config.GARAGE_DOORS[0].pin, config.RELAY_OFF, callback);
+			delayPinWrite(pin, config.RELAY_OFF, callback);
 		},
 		function(err, results) {
 			setTimeout(function() {
 				// Close pin from further writing
-				gpio.close(config.GARAGE_DOORS[0].pin);
+				gpio.close(pin);
 				// Return json
 				res.json("ok");
 			}, config.RELAY_TIMEOUT);
 		}
 	]);
+}
+
+app.get("/api/ping", function(req, res) {
+	res.json("pong");
+});
+
+
+app.post("/api/garage/door/1", function(req, res) {
+	simulateButtonPress(config.GARAGE_DOORS[0].pin);
 });
 
 app.post("/api/garage/door/2", function(req, res) {
