@@ -45,7 +45,7 @@ function gpioTasks(pin) {
 
 function simulateButtonPress(tasks, res) {
 	// Append response to gpio tasks
-	async.series(tasks.push(
+	async.series(tasks.concat(
 		function(err, results) {
 				// Return json
 				res.json("ok");
