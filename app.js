@@ -15,7 +15,7 @@ function delayPinWrite(pin, value, callback) {
 	}, config.RELAY_TIMEOUT);
 }
 
-function simulateButtonPress(pin) {
+function simulateButtonPress(pin, res) {
 	async.series([
 		function(callback) {
 			// Open pin for output
@@ -46,7 +46,7 @@ app.get("/api/ping", function(req, res) {
 
 
 app.post("/api/garage/door/1", function(req, res) {
-	simulateButtonPress(config.GARAGE_DOORS[0].pin);
+	simulateButtonPress(config.GARAGE_DOORS[0].pin, res);
 });
 
 app.post("/api/garage/door/2", function(req, res) {
