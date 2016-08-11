@@ -4,6 +4,10 @@ config.GARAGE_DOORS = [
   {
     name: 'Garage Door',
     pin: 11
+  },
+  {
+    name: 'Garage Door #2',
+    pin: 16
   }
 ];
 
