@@ -49,7 +49,7 @@ function simulateButtonPress(tasks, res) {
 		function(err, results) {
 				// Return json
 				res.json("ok");
-		});
+		}));
 }
 
 app.get("/api/ping", function(req, res) {
