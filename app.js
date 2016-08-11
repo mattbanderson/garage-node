@@ -66,7 +66,11 @@ app.post("/api/garage/door/2", function(req, res) {
 });
 
 app.post("/api/garage/all", function(req, res) {
-		simulateButtonPress(gpioTasks(config.GARAGE_DOORS[1].pin).concat(gpioTasks(config.GARAGE_DOORS[1].pin)), res);
+		let tasks = [];
+		for (var i = 0; i < config.GARAGE_DOORS.length; i++) {
+			tasks.concat(gpioTasks(config.GARAGE_DOORS[i].pin));
+		}
+		simulateButtonPress(tasks, res);
 });
 
 app.listen(app.get('port'));
