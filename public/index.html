@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Nycum's Garage</title>
+	<title>My Garage Doors</title>
 	<meta name="viewport" content="width=device-width, user-scalable=no, minimal-ui">
 	<link rel="apple-touch-icon" sizes="120x120" href="touch-icon-iphone-retina.png">
 	<style>
@@ -29,9 +29,9 @@
 	</style>
 </head>
 <body>
-	<button onclick="openLeft()">Left Garage</button>
-	<button onclick="openRight()">Right Garage</button>
-	<button onclick="openBoth()">Both Garages</button>
+	<button onclick="openGarageDoor()">Garage Door</button>
+	<!-- <button onclick="openGarageDoorTwo()">Garage Door Two</button>
+	<button onclick="openAll()">Open All Garage Doors</button> -->
 
 	<script>
 
@@ -42,11 +42,9 @@
 		request.send({});
 	}
 
-	function openLeft() { post("/api/garage/left"); }
-
-	function openRight() { post("/api/garage/right"); }
-
-	function openBoth() { post("/api/garage/both"); }
+	function openGarageDoor() { post("/api/garage/door/1"); }
+	//function openGarageDoorTwo() { post("/api/garage/door/2"); }
+	function openAll() { post("/api/garage/door/all"); }
 
 	</script>
 
