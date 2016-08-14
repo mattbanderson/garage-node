@@ -29,24 +29,45 @@
 	</style>
 </head>
 <body>
-	<button onclick="openGarageDoor()">Garage Door</button>
+	<button onclick="openGarageDoor()">Garage Door: <span id="status1"></span></button>
 	<!-- <button onclick="openGarageDoorTwo()">Garage Door Two</button>
 	<button onclick="openAll()">Open All Garage Doors</button> -->
 
 	<script>
+		function post(url) {
+			var request = new XMLHttpRequest()
+			request.open('POST', url, true);
+			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+			request.send({});
+		}
 
-	function post(url) {
-		var request = new XMLHttpRequest();
-		request.open('POST', url, true);
-		request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-		request.send({});
-	}
+		function updateStatus(doorId, status) {
+			document.getElementById("status" + doorId).innerText = parseInt(status) === 0 ? "CLOSED" : "OPEN";
+		}
 
-	function openGarageDoor() { post("/api/garage/door/1"); }
-	//function openGarageDoorTwo() { post("/api/garage/door/2"); }
-	function openAll() { post("/api/garage/door/all"); }
+		function get(url, callback) {
+			var request = new XMLHttpRequest();
+			request.addEventListener("load", callback);
+			request.open('GET', url, true);
+			request.send({});
+		}
 
+		function getStatus(doorId) {
+			get('api/garage/door/' + doorId, function () { updateStatus(doorId, this.responseText); });
+		}
+
+		function getDoorStatuses() {
+			getStatus(1);
+		}
+
+		function openGarageDoor() {
+			post("/api/garage/door/1");
+			window.setTimeout(getDoorStatuses, 15000);
+		}
+		//function openGarageDoorTwo() { post("/api/garage/door/2"); }
+		function openAll() { post("/api/garage/door/all"); }
+
+		window.onload = getDoorStatuses
 	</script>
-
 </body>
 </html>

@@ -58,6 +58,20 @@ app.get("/api/ping", function(req, res) {
 	res.json("pong");
 });
 
+app.get("/api/garage/door/1", function(req, res) {
+	let pin = 15;
+	gpio.open(pin, "input", function(openError) {
+    gpio.read(pin, function(readError, result) {
+			if (openError || readError) {
+				const err = openError ? openError : readError;
+				res.json(err);
+			}	else {
+				res.json(result);
+			}
+			gpio.close(pin);
+    });
+	});
+});
 
 app.post("/api/garage/door/1", function(req, res) {
 	simulateButtonPress(gpioTasks(config.GARAGE_DOORS[0].pin), res);
