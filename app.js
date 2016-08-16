@@ -24,7 +24,7 @@ function delayPinClose(pin, callback) {
 	callback(null, "done");
 }
 
-function gpioTasks(pin) {
+function gpioWriteTasks(pin) {
 	return [
 			function(callback) {
 				// Open pin for output
@@ -45,6 +45,21 @@ function gpioTasks(pin) {
 	];
 }
 
+function gpioReadTasks(pin) {
+	return [
+		function(callback) {
+			gpio.open(pin, "input", callback);
+		},
+		function(callback) {
+			gpio.read(pin, callback);
+		},
+		function(callback) {
+			gpio.close(pin);
+			callback();
+		}
+	];
+}
+
 function simulateButtonPress(tasks, res) {
 	// Append response to gpio tasks
 	async.series(tasks.concat(
@@ -60,31 +75,29 @@ app.get("/api/ping", function(req, res) {
 
 app.get("/api/garage/door/1", function(req, res) {
 	let pin = 15;
-	gpio.open(pin, "input", function(openError) {
-    gpio.read(pin, function(readError, result) {
-			if (openError || readError) {
-				const err = openError ? openError : readError;
+	async.series(gpioReadTasks(pin),
+		function(err, result) {
+			if (err) {
 				res.json(err);
-			}	else {
-				res.json(result);
+			} else {
+				res.json(result[1]);
 			}
-			gpio.close(pin);
-    });
-	});
+		}
+	);
 });
 
 app.post("/api/garage/door/1", function(req, res) {
-	simulateButtonPress(gpioTasks(config.GARAGE_DOORS[0].pin), res);
+	simulateButtonPress(gpioWriteTasks(config.GARAGE_DOORS[0].pin), res);
 });
 
 app.post("/api/garage/door/2", function(req, res) {
-	simulateButtonPress(gpioTasks(config.GARAGE_DOORS[1].pin), res);
+	simulateButtonPress(gpioWriteTasks(config.GARAGE_DOORS[1].pin), res);
 });
 
 app.post("/api/garage/all", function(req, res) {
 		let tasks = [];
 		for (var i = 0; i < config.GARAGE_DOORS.length; i++) {
-			tasks.concat(gpioTasks(config.GARAGE_DOORS[i].pin));
+			tasks.concat(gpioWriteTasks(config.GARAGE_DOORS[i].pin));
 		}
 		simulateButtonPress(tasks, res);
 });
