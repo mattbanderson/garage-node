@@ -29,7 +29,7 @@
 	</style>
 </head>
 <body>
-	<button onclick="openGarageDoor()">Garage Door: <span id="status1"></span></button>
+	<button id="button" onclick="openGarageDoor(this)">Garage Door: <span id="status1"></span></button>
 	<!-- <button onclick="openGarageDoorTwo()">Garage Door Two</button>
 	<button onclick="openAll()">Open All Garage Doors</button> -->
 
@@ -43,6 +43,7 @@
 
 		function updateStatus(doorId, status) {
 			document.getElementById("status" + doorId).innerText = parseInt(status) === 0 ? "CLOSED" : "OPEN";
+			document.getElementById("button").disabled = false;
 		}
 
 		function get(url, callback) {
@@ -60,7 +61,8 @@
 			getStatus(1);
 		}
 
-		function openGarageDoor() {
+		function openGarageDoor(btn) {
+			btn.disabled = true;
 			post("/api/garage/door/1");
 			window.setTimeout(getDoorStatuses, 15000);
 		}
