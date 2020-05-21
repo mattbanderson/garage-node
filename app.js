@@ -33,19 +33,19 @@ function delayPinClose(pin, callback) {
 function gpioWriteTasks(pin) {
 	return [
 			function(callback) {
-				// Open pin for output
+				console.log("opening pin for output");
 				gpio.open(pin, "output", callback);
 			},
 			function(callback) {
-				// Turn the relay on
+				console.log("turning relay on");
 				gpio.write(pin, config.RELAY_ON, callback);
 			},
 			function(callback) {
-				// Turn the relay off after delay to simulate button press
+				console.log("turning relay off");
 				delayPinWrite(pin, config.RELAY_OFF, callback);
 			},
 			function(callback) {
-				// Turn the relay off after delay to simulate button press
+				console.log("closing pin for output")
 				delayPinClose(pin, callback);
 			}
 	];
@@ -81,9 +81,11 @@ app.get("/api/ping", function(req, res) {
 
 app.get("/api/garage/door/1", function(req, res) {
 	let pin = 15;
+	console.log('requesting garage door status');
 	async.series(gpioReadTasks(pin),
 		function(err, result) {
 			if (err) {
+				console.error("Error reading gpio pins", err);
 				res.json(err);
 			} else {
 				res.json(result[1]);
@@ -93,7 +95,12 @@ app.get("/api/garage/door/1", function(req, res) {
 });
 
 app.post("/api/garage/door/1", function(req, res) {
-	simulateButtonPress(gpioWriteTasks(config.GARAGE_DOORS[0].pin), res);
+	console.log('garage door button pressed');
+	try {
+		simulateButtonPress(gpioWriteTasks(config.GARAGE_DOORS[0].pin), res);
+	} catch (err) {
+		console.error("Error simulating button press: ", err);
+	}
 });
 
 app.post("/api/garage/door/2", function(req, res) {
