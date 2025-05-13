@@ -3,11 +3,13 @@ var config = {};
 config.GARAGE_DOORS = [
   {
     name: 'Garage Door',
-    pin: 11
+    writePin: 11,
+    readPin: 15
   },
   {
     name: 'Garage Door #2',
-    pin: 16
+    writePin: 16,
+    readPin: 22
   }
 ];
 

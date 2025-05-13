@@ -69,9 +69,8 @@ app.get("/api/ping", (req, res) => {
 });
 
 app.get("/api/garage/door/1", (req, res) => {
-	const pin = 15;
 	console.log('requesting garage door status');
-	async.series(gpioReadTasks(pin), function(err, result) {
+	async.series(gpioReadTasks(config.GARAGE_DOORS[0].readPin), function(err, result) {
 		if (err) {
 			console.error("Error reading gpio pins", err);
 			res.json(err);
@@ -84,7 +83,7 @@ app.get("/api/garage/door/1", (req, res) => {
 app.post("/api/garage/door/1", (req, res) => {
 	console.log('garage door button pressed');
 	try {
-		simulateButtonPress(gpioWriteTasks(config.GARAGE_DOORS[0].pin), res);
+		simulateButtonPress(gpioWriteTasks(config.GARAGE_DOORS[0].writePin), res);
 	} catch (err) {
 		console.error("Error simulating button press: ", err);
 		res.status(500).json({ error: err.message });
@@ -92,13 +91,13 @@ app.post("/api/garage/door/1", (req, res) => {
 });
 
 app.post("/api/garage/door/2", (req, res) => {
-	simulateButtonPress(gpioWriteTasks(config.GARAGE_DOORS[1].pin), res);
+	simulateButtonPress(gpioWriteTasks(config.GARAGE_DOORS[1].writePin), res);
 });
 
 app.post("/api/garage/all", (req, res) => {
 	let tasks = [];
 	for (let i = 0; i < config.GARAGE_DOORS.length; i++) {
-		tasks = tasks.concat(gpioWriteTasks(config.GARAGE_DOORS[i].pin));
+		tasks = tasks.concat(gpioWriteTasks(config.GARAGE_DOORS[i].writePin));
 	}
 	simulateButtonPress(tasks, res);
 });
