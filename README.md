@@ -26,7 +26,13 @@ After checking out this code from Github, just run `npm install` from the app di
  * [async.js](https://github.com/caolan/async)
  * [pi-gpio](https://github.com/brentnycum/pi-gpio) My fork. [Original Repo](https://github.com/rakeshpai/pi-gpio)
 
-I used `pi-gpio` over [rpi-gpio](https://github.com/JamesBarwell/rpi-gpio.js) because I liked the fact pi-gpio made use of [GPIO Admin](https://github.com/quick2wire/quick2wire-gpio-admin), allowing you to be able to control the gpio pins without being the root user. Couldn't get `rpi-gpio` to use that.
+~I used `pi-gpio` over [rpi-gpio](https://github.com/JamesBarwell/rpi-gpio.js) because I liked the fact pi-gpio made use of [GPIO Admin](https://github.com/quick2wire/quick2wire-gpio-admin), allowing you to be able to control the gpio pins without being the root user. Couldn't get `rpi-gpio` to use that.~
+
+[GPIO Admin](https://github.com/quick2wire/quick2wire-gpio-admin) indicates is is no longer necessary and the install instructions may no longer work. 
+Neither project is actively maintained, but `rpi-gpio` indicates support through Raspberry Pi Model 4 B so it is now used.
+
+The Raspberry Pi user (default `pi`) needs to be added to the `gpio` group; e.g. `sudo adduser pi gpio`.
+Restart the Pi to apply changes.
 
 ## Configuration
 
