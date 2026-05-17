@@ -1,14 +1,17 @@
 {
-  "name": "Garage",
-  "version": "0.0.1",
+  "name": "garage",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
-    "start": "node app"
+    "start": "node app.js"
   },
   "dependencies": {
-    "async": "0.2.6",
-    "express": "^3.1.0",
-    "rpi-gpio": "^2.1.7",
-    "suncalc": "^1.7.0"
+    "express": "^4.18.2",
+    "onoff": "^6.0.3",
+    "proper-lockfile": "^4.1.2",
+    "suncalc": "^1.9.0"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

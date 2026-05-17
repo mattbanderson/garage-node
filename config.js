@@ -1,15 +1,17 @@
 var config = {};
 
+// GPIO pin configuration
+// Note: Based on BCM numbering, not physical pin numbers
 config.GARAGE_DOORS = [
   {
     name: 'Garage Door',
-    writePin: 11,
-    readPin: 15
+    writePin: 17,
+    readPin: 22
   },
   {
     name: 'Garage Door #2',
-    writePin: 16,
-    readPin: 22
+    writePin: 23,
+    readPin: 25
   }
 ];
 
