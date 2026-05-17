@@ -10,12 +10,6 @@ Install [node.js](http://nodejs.org/) and npm onto your Raspberry Pi.
 [sudo] apt-get install nodejs npm
 ```
 
-I recommend using [forever](https://github.com/nodejitsu/forever) to run your app so that it stays up.
-
-``` shell
-[sudo] npm install forever -g
-```
-
 ## Installation
 
 After checking out this code from Github, just run `npm install` from the app directory to install all dependencies.
@@ -43,6 +37,61 @@ In the root directory there is a file called `config.js`. In here you will find 
  * `RELAY_ON` - Relay on state.
  * `RELAY_OFF` - Relay off state.
  * `RELAY_TIMEOUT` - How long the relay should stay on before turning off.
+
+## Running the App
+
+### As a systemd service
+
+`systemd` can be used to run the app as a service.
+
+Create the following file as `/etc/systemd/system/garage-node.service`:
+
+```sh
+[Unit]
+Description=Home REST API (Node.js)
+After=network.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/apps/garage-node
+ExecStart=/usr/bin/node /home/pi/apps/garage-node/app.js
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Then execute the following commands:
+
+```sh
+sudo systemctl daemon-reload
+
+# Enable it to start automatically on boot
+sudo systemctl enable garage-node.service
+
+# Start it now
+sudo systemctl start garage-node.service
+
+# Check that it’s running
+sudo systemctl status garage-node.service
+
+# Or tail the logs
+journalctl -u garage-node.service -f
+```
+
+### Using Forever
+
+The npm library [forever](https://github.com/nodejitsu/forever) can be used to run the app so that it stays up.
+
+```sh
+[sudo] npm install forever -g
+```
+
+```sh
+forever start /home/pi/garage-node/app.js
+```
 
 ## Gotchas
 
