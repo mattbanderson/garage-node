@@ -48,7 +48,7 @@ Create the following file as `/etc/systemd/system/garage-node.service`:
 
 ```sh
 [Unit]
-Description=Home REST API (Node.js)
+Description=Garage-Node (Node.js)
 After=network.target
 
 [Service]
