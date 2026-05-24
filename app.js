@@ -57,9 +57,9 @@ async function simulateButtonPress(i) {
 
     console.log(`Trigger relay GPIO ${pin}`);
 
-    writeGPIO(pin, 1);
+    writeGPIO(pin, config.RELAY_ON);
     await sleep(config.RELAY_TIMEOUT);
-    writeGPIO(pin, 0);
+    writeGPIO(pin, config.RELAY_OFF);
 }
 
 function getDoorState(i) {
