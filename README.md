@@ -98,9 +98,8 @@ The Raspberry Pi defaults the GPIO pin to low, but the pin is default set to inp
 
 ## Parts
 
- * Raspberry Pi running Raspbian "wheezy"
- * [Edimax EW-7811Un](http://www.amazon.com/dp/B003MTTJOY?tag=itsbr-20) (WiFi dongle, b/g/n)
- * [SainSmart 2-Channel Relay](http://www.amazon.com/dp/B0057OC6D8?tag=itsbr-20)
+ * Raspberry Pi [3b](https://link.amazon/B010Z31U3) or [4](https://link.amazon/B05HM44DN) kit
+ * [2-Channel Relay](https://link.amazon/B08uq8R23)
 
 ## Links
 
