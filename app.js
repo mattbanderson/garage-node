@@ -35,8 +35,26 @@ async function acquireLock() {
  * GPIO VIA gpioinfo/gpioget/gpioset (libgpiod CLI)
  */
 
+function getGpioOptions() {
+    try {
+        const version = execSync('gpioset --version', { encoding: 'utf8' });
+
+        // libgpiod v2 uses the -c/--chip option
+        const majorVersion = Number(version.match(/\d+/)?.[0]);
+
+        if (majorVersion >= 2) {
+            return '-c';
+        }
+
+        return '';
+    } catch (err) {
+        throw new Error('Unable to determine gpioset version');
+    }
+}
+const gpioOptions = getGpioOptions();
+
 function writeGPIO(pin, value) {
-    execSync(`gpioset gpiochip0 ${pin}=${value}`);
+    execSync(`gpioset ${gpioOptions} gpiochip0 ${pin}=${value}`);
 }
 
 function readGPIO(pin) {
